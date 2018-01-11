@@ -1,8 +1,8 @@
 <template>
-  <div class="opera-list">
+  <div class="blog-list">
     <h1>{{ msg }}</h1>
     <h2>Un Lovaro in Corso</h2>
-    <div class="opera-box" v-if="articleTitle">
+    <div class="blog-box" v-if="articleTitle">
       <p>{{articleTitle}}</p>
       <p v-html="articleBody"></p>
     </div> 
@@ -22,20 +22,19 @@ import VueAxios from 'vue-axios';
 Vue.use(VueAxios, axios);
 
 export default {
-  name: 'OperaList',
+  name: 'BlogList',
   data () {
     return {
-      msg: 'Testing JSON API ...',
+      msg: 'VueLK: Testing for redesign of this long-running site ...',
       posts: [],
       errors: [],
-      operadata: {}
+      blogdata: {}
     }
   },
   created() {
-    axios.get(`http://reservoir.marceliotstein.net/jsonapi/node/article/95a31824-e0cc-4cdb-aca3-75089a3122e0`)
+    axios.get('http://whatvoir.marceliotstein.net/jsonapi/node/article/f0e9a678-fbba-450e-ba8e-da08bd4e527a')
     .then(response => {
-      this.operadata = response.data;
-      console.log("GRGG" + this.operadata["data"]["attributes"]["title"]);
+      this.blogdata = response.data;
     })
     .catch(e => {
       this.errors.push(e)
@@ -43,20 +42,20 @@ export default {
   },
   computed: {
     articleTitle: function() {
-      if (this.operadata["data"]) {
-        if (this.operadata["data"]["attributes"]) {
-          if (this.operadata["data"]["attributes"]["title"]) {
-            return this.operadata["data"]["attributes"]["title"];
+      if (this.blogdata["data"]) {
+        if (this.blogdata["data"]["attributes"]) {
+          if (this.blogdata["data"]["attributes"]["title"]) {
+            return this.blogdata["data"]["attributes"]["title"];
           }
         }
       }  
       return "";
     },
     articleBody: function() {
-      if (this.operadata["data"]) {
-        if (this.operadata["data"]["attributes"]) {
-          if (this.operadata["data"]["attributes"]["field_body"]) {
-            return this.operadata["data"]["attributes"]["field_body"]["value"];
+      if (this.blogdata["data"]) {
+        if (this.blogdata["data"]["attributes"]) {
+          if (this.blogdata["data"]["attributes"]["field_body"]) {
+            return this.blogdata["data"]["attributes"]["field_body"]["value"];
           }
         }
       }  
@@ -71,11 +70,14 @@ h1, h2 {
   font-weight: normal;
 }
 
-.opera-box {
+.blog-box {
+  width: 70%;
+  margin: 0 auto;
   border-width: 3px;
   border-style: dashed;
   border-color: purple;
   text-align: left;
+  padding: 10px;
 }
 
 a {

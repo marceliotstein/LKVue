@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import OperaList from '@/components/OperaList'
+import BlogList from '@/components/BlogList'
 
 Vue.use(Router)
 
@@ -8,8 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Operas',
-      component: OperaList
+      name: 'Blog Posts',
+      component: BlogList
     }
   ]
 })
