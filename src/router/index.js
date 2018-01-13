@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import BlogList from '@/components/BlogList'
+import LKPage from '@/components/LKPage'
 
 Vue.use(Router)
 
@@ -8,8 +8,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Blog Posts',
-      component: BlogList
+      name: 'LK Page',
+      component: LKPage
     }
   ]
 })
