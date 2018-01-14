@@ -78,6 +78,12 @@ export default {
 </script>
 
 <style scoped>
+.storyline {
+  border-top-width: 3px;
+  border-top-style: dashed;
+  border-top-color: black;
+}
+
 .story-dek {
   padding-bottom:10px;
 }
@@ -93,6 +99,7 @@ h1, h2 {
 }
 
 .results-inner {
+  background-color: white;
   margin-top: 100px;
 }
 
