@@ -8,7 +8,7 @@
           <ul class="results-ul">
             <li v-for="item in processedStories">
               <div class="itemstuff">
-                {{ item }}
+                {{ item.id }}
               </div>
             </li>  
           </ul>
@@ -64,8 +64,8 @@ export default {
   computed: {
     processedStories() {
       console.log("IN PROCESSED STORIES");
-      //let storyArray = Array.from(this.results);
-      let storyArray = [ "orange", "apple", "banana" ];
+      let storyArray = Array.from(this.results);
+      //let storyArray = [ {"id":"lemon"}, {"id":"mango"}, {"id":"papaya"} ];
       console.log(storyArray.toString());
       return storyArray;
     }
