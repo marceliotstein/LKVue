@@ -8,10 +8,18 @@
           <ul class="results-ul">
             <li v-for="story in processedStories">
               <div class="storyline">
-                <span class="story-title">{{ story.attributes.title }}</span> &mdash;
-                <span class="story-author">{{ story.attributes.created }}</span> &mdash;
-                <span class="story-datetime">{{ new Date(story.attributes.created * 1000) }}</span> &mdash;
-                <span class="story-alias">{{ story.attributes.path.alias }}</span>
+                <div>
+                  <span class="story-title">{{ story.attributes.title }}</span> &mdash;
+                  <span class="story-author">{{ story.relationships.uid.data.id }}</span> &mdash;
+                </div>
+                <div>
+                  <span class="story-datetime">{{ new Date(story.attributes.created * 1000) }}</span> &mdash;
+                  <span class="story-alias">{{ story.attributes.path.alias }}</span>
+                  <span class="story-promote">{{ story.attributes.promote }}</span>
+                </div>
+                <div class="story-dek">
+                  {{ story.attributes.field_dek.value }}
+                </div>
               </div>
             </li>  
           </ul>
@@ -50,6 +58,7 @@ export default {
   }, 
   methods: {
     getStories() {
+      //axios.get('http://whatvoir.marceliotstein.net/jsonapi/node/story?sort=-created&fields[node--story]=type,uid,title,body,author,created,promote,uid,path,field_dek')
       axios.get('http://whatvoir.marceliotstein.net/jsonapi/node/story?sort=-created')
       .then(response => {
         this.results = response.data;
@@ -69,6 +78,10 @@ export default {
 </script>
 
 <style scoped>
+.story-dek {
+  padding-bottom:10px;
+}
+
 h1, h2 {
   font-weight: normal;
 }
