@@ -59,7 +59,6 @@ export default {
   methods: {
     getStories() {
       axios.get('http://whatvoir.marceliotstein.net/jsonapi/node/story?sort=-created&fields[node--story]=type,uid,title,body,author,created,promote,uid,path,field_dek')
-      //axios.get('http://whatvoir.marceliotstein.net/jsonapi/node/story?sort=-created')
       .then(response => {
         this.results = response.data;
       })
@@ -99,7 +98,10 @@ h1, h2 {
 }
 
 .results-inner {
+  margin-left: 40px;
+  margin-right: 40px;
   background-color: white;
+  opacity: 90%;
   margin-top: 100px;
 }
 
