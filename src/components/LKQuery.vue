@@ -6,9 +6,12 @@
       <h2>La Commedia E Finita</h2>
         <div v-if="processedStories">
           <ul class="results-ul">
-            <li v-for="item in processedStories">
-              <div class="itemstuff">
-                {{ item.id }}
+            <li v-for="story in processedStories">
+              <div class="storyline">
+                <span class="story-title">{{ story.attributes.title }}</span> &mdash;
+                <span class="story-author">{{ story.attributes.created }}</span> &mdash;
+                <span class="story-datetime">{{ new Date(story.attributes.created * 1000) }}</span> &mdash;
+                <span class="story-alias">{{ story.attributes.path.alias }}</span>
               </div>
             </li>  
           </ul>
@@ -38,35 +41,27 @@ export default {
   data () {
     return {
       msg: 'VueLK: Testing various JSON API filters and data sets.',
-      posts: [],
       errors: [],
       results: {}
     }
   },
   created() {
-    console.log("IN MOUNTED");
     this.getStories();
   }, 
   methods: {
     getStories() {
-      console.log("IN GET STORIES");
       axios.get('http://whatvoir.marceliotstein.net/jsonapi/node/story?sort=-created')
       .then(response => {
-        console.log("IN GET STORIES - RESPONSE FOUND");
         this.results = response.data;
       })
       .catch(e => {
-        console.log("IN GET STORIES - ERROR");
         this.errors.push(e)
       });
     }
   },
   computed: {
     processedStories() {
-      console.log("IN PROCESSED STORIES");
       let storyArray = this.results["data"];
-      //let storyArray = [ {"id":"lemon"}, {"id":"mango"}, {"id":"papaya"} ];
-      console.log(storyArray);
       return storyArray;
     }
   }
