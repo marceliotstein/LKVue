@@ -58,8 +58,8 @@ export default {
   }, 
   methods: {
     getStories() {
-      //axios.get('http://whatvoir.marceliotstein.net/jsonapi/node/story?sort=-created&fields[node--story]=type,uid,title,body,author,created,promote,uid,path,field_dek')
-      axios.get('http://whatvoir.marceliotstein.net/jsonapi/node/story?sort=-created')
+      axios.get('http://whatvoir.marceliotstein.net/jsonapi/node/story?sort=-created&fields[node--story]=type,uid,title,body,author,created,promote,uid,path,field_dek')
+      //axios.get('http://whatvoir.marceliotstein.net/jsonapi/node/story?sort=-created')
       .then(response => {
         this.results = response.data;
       })
