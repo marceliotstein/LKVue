@@ -5,24 +5,20 @@
       <h1>{{ msg }}</h1>
       <h2>La Commedia E Finita</h2>
         <div v-if="processedStories">
-          <ul class="results-ul">
-            <li v-for="story in processedStories">
-              <div class="storyline">
-                <div>
-                  <span class="story-title">{{ story.attributes.title }}</span> &mdash;
-                  <span class="story-author">{{ story.relationships.uid.data.id }}</span> &mdash;
-                </div>
-                <div>
-                  <span class="story-datetime">{{ new Date(story.attributes.created * 1000) }}</span> &mdash;
-                  <span class="story-alias">{{ story.attributes.path.alias }}</span>
-                  <span class="story-promote">{{ story.attributes.promote }}</span>
-                </div>
-                <div class="story-dek">
-                  {{ story.attributes.field_dek.value }}
-                </div>
-              </div>
-            </li>  
-          </ul>
+          <div class="storybox" v-for="story in processedStories">
+            <div>
+              <span class="story-title">{{ story.title }}</span> &mdash;
+              <span class="story-author">{{ story.id }}</span> &mdash;
+            </div>
+            <div>
+              <span class="story-datetime">{{ story.datetime }}</span> &mdash;
+              <span class="story-alias">{{ story.alias }}</span>
+              <span class="story-promote">{{ story.promote }}</span>
+            </div>
+            <div class="story-dek">
+              {{ story.dek }}
+            </div>
+          </div>
         </div>
       <ul v-if="errors && errors.length">
         <li v-for="error of errors">
@@ -36,6 +32,7 @@
 <script>
 import Vue from 'vue';
 import axios from 'axios';
+import moment from 'moment';
 import VueAxios from 'vue-axios';
 import LKBurger from '@/components/LKBurger.vue';
 
@@ -50,7 +47,8 @@ export default {
     return {
       msg: 'VueLK: Testing various JSON API filters and data sets.',
       errors: [],
-      results: {}
+      results: {},
+      processedResults: {}
     }
   },
   created() {
@@ -58,7 +56,7 @@ export default {
   }, 
   methods: {
     getStories() {
-      axios.get('http://whatvoir.marceliotstein.net/jsonapi/node/story?sort=-created&fields[node--story]=type,uid,title,body,author,created,promote,uid,path,field_dek')
+      axios.get('http://whatvoir.marceliotstein.net/jsonapi/node/story?sort=-created&fields[node--story]=type,uid,title,body,author,created,promote,uid,path,field_dek&page[limit]=25')
       .then(response => {
         this.results = response.data;
       })
@@ -69,18 +67,38 @@ export default {
   },
   computed: {
     processedStories() {
-      let storyArray = this.results["data"];
-      return storyArray;
+      let inputArray = this.results["data"];
+      let outputArray = new Array();
+      if (inputArray) {
+   console.log("running Processed - length is " + inputArray.length);
+        for (var i=0; i<inputArray.length; i++) {
+          var newStory = new Object();
+          console.log("id is " + inputArray[i].id);
+          console.log("title is " + inputArray[i].attributes.title);
+          newStory.id = inputArray[i].id;
+          newStory.title = inputArray[i].attributes.title;
+          newStory.author =  inputArray[i].relationships.uid.data.id;
+          newStory.datetime = new Date(inputArray[i].attributes.created * 1000);
+          newStory.alias = "ALIAS" + inputArray[i].attributes.path.alias;
+          newStory.promote = inputArray[i].attributes.promote;
+          newStory.dek = inputArray[i].attributes.field_dek.value;
+          outputArray.push(newStory);
+        }
+   console.log("leaving Processed");
+      }
+      return outputArray;
     }
   }
 };
 </script>
 
 <style scoped>
-.storyline {
-  border-top-width: 3px;
-  border-top-style: dashed;
-  border-top-color: black;
+.storybox {
+  margin: 20px;
+  padding: 20px;
+  border-width: 3px;
+  border-style: dashed;
+  border-color: black;
 }
 
 .story-dek {
