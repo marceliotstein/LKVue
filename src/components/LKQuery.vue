@@ -1,19 +1,22 @@
+/*
+ * LKVue: display a list of stories
+ */
 <template>
   <div class="query-results">
     <LKBurger/>
     <div class="results-inner">
       <h1>{{ msg }}</h1>
       <h2>La Commedia E Finita</h2>
-        <div v-if="processedStories">
+        <div class="storylist" v-if="processedStories">
           <div class="storybox" v-for="story in processedStories">
             <div>
               <span class="story-title">{{ story.title }}</span> &mdash;
-              <span class="story-author">{{ story.id }}</span> &mdash;
+              <span class="story-alias">{{ story.alias }}</span> 
+              (<span class="story-promote">{{ story.promote }}</span>)
             </div>
             <div>
+              by <span class="story-author">{{ story.id }}</span> 
               <span class="story-datetime">{{ story.datetime }}</span> &mdash;
-              <span class="story-alias">{{ story.alias }}</span>
-              <span class="story-promote">{{ story.promote }}</span>
             </div>
             <div class="story-dek">
               {{ story.dek }}
@@ -70,21 +73,21 @@ export default {
       let inputArray = this.results["data"];
       let outputArray = new Array();
       if (inputArray) {
-   console.log("running Processed - length is " + inputArray.length);
         for (var i=0; i<inputArray.length; i++) {
           var newStory = new Object();
-          console.log("id is " + inputArray[i].id);
-          console.log("title is " + inputArray[i].attributes.title);
+
+          // format date
+          let storyDatetime = new Date(inputArray[i].attributes.created * 1000);
+
           newStory.id = inputArray[i].id;
           newStory.title = inputArray[i].attributes.title;
           newStory.author =  inputArray[i].relationships.uid.data.id;
-          newStory.datetime = new Date(inputArray[i].attributes.created * 1000);
-          newStory.alias = "ALIAS" + inputArray[i].attributes.path.alias;
+          newStory.datetime = moment(storyDatetime).format('MMMM D YYYY, h:mm a');
+          newStory.alias = inputArray[i].attributes.path.alias;
           newStory.promote = inputArray[i].attributes.promote;
           newStory.dek = inputArray[i].attributes.field_dek.value;
           outputArray.push(newStory);
         }
-   console.log("leaving Processed");
       }
       return outputArray;
     }
@@ -93,6 +96,13 @@ export default {
 </script>
 
 <style scoped>
+.storylist {
+  margin-top: 100px;
+  border-width: 1px;
+  border-style: groove;
+  border-color: magenta;
+}
+
 .storybox {
   margin: 20px;
   padding: 20px;
@@ -102,7 +112,8 @@ export default {
 }
 
 .story-dek {
-  padding-bottom:10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 h1, h2 {
