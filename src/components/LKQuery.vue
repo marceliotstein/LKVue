@@ -40,7 +40,7 @@ export default {
       msg: 'VueLK: Testing various JSON API filters and data sets.',
       posts: [],
       errors: [],
-      results: []
+      results: {}
     }
   },
   created() {
@@ -64,9 +64,9 @@ export default {
   computed: {
     processedStories() {
       console.log("IN PROCESSED STORIES");
-      let storyArray = Array.from(this.results);
+      let storyArray = this.results["data"];
       //let storyArray = [ {"id":"lemon"}, {"id":"mango"}, {"id":"papaya"} ];
-      console.log(storyArray.toString());
+      console.log(storyArray);
       return storyArray;
     }
   }
