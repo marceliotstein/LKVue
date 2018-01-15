@@ -97,8 +97,8 @@ export default {
 
 <style scoped>
 .storylist {
-  margin-top: 100px;
-  border-width: 1px;
+  margin-top: 20px;
+  border-width: 5px;
   border-style: groove;
   border-color: magenta;
 }
