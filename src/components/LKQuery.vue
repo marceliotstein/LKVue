@@ -21,6 +21,9 @@
             <div class="story-dek">
               {{ story.dek }}
             </div>
+            <div class="story-terms">
+              {{ story.topics }}
+            </div>
           </div>
         </div>
       <ul v-if="errors && errors.length">
@@ -59,7 +62,7 @@ export default {
   }, 
   methods: {
     getStories() {
-      axios.get('http://whatvoir.marceliotstein.net/jsonapi/node/story?sort=-created&fields[node--story]=type,uid,title,body,author,created,promote,uid,path,field_dek&page[limit]=25')
+      axios.get('http://whatvoir.marceliotstein.net/jsonapi/node/story?sort=-created&fields[node--story]=type,uid,title,body,author,created,promote,uid,path,field_dek,taxonomy_vocabulary_1,taxonomy_vocabulary_3,taxonomy_vocabulary_4,taxonomy_vocabulary_5,taxonomy_vocabulary_6&page[limit]=25')
       .then(response => {
         this.results = response.data;
       })
@@ -70,26 +73,36 @@ export default {
   },
   computed: {
     processedStories() {
-      let inputArray = this.results["data"];
-      let outputArray = new Array();
-      if (inputArray) {
-        for (var i=0; i<inputArray.length; i++) {
+      let results = this.results["data"];
+      let processed = new Array();
+      if (results) {
+        for (var i=0; i<results.length; i++) {
           var newStory = new Object();
 
           // format date
-          let storyDatetime = new Date(inputArray[i].attributes.created * 1000);
+          let storyDatetime = new Date(results[i].attributes.created * 1000);
 
-          newStory.id = inputArray[i].id;
-          newStory.title = inputArray[i].attributes.title;
-          newStory.author =  inputArray[i].relationships.uid.data.id;
+          newStory.id = results[i].id;
+          newStory.title = results[i].attributes.title;
+          newStory.author =  results[i].relationships.uid.data.id;
           newStory.datetime = moment(storyDatetime).format('MMMM D YYYY, h:mm a');
-          newStory.alias = inputArray[i].attributes.path.alias;
-          newStory.promote = inputArray[i].attributes.promote;
-          newStory.dek = inputArray[i].attributes.field_dek.value;
-          outputArray.push(newStory);
+          newStory.alias = results[i].attributes.path.alias;
+          newStory.promote = results[i].attributes.promote;
+          newStory.dek = results[i].attributes.field_dek.value;
+
+          // process taxonomy terms
+          // vocabulary 1 - topics
+          let numTopics = results[i].relationships.taxonomy_vocabulary_1.data.length;
+          newStory.topics = "TOPICS: ";
+          for (var j=0; j<numTopics; j++) {
+            console.log("loopin thru topics");
+            newStory.topics += results[i].relationships.taxonomy_vocabulary_1.data[j].id;
+          }
+
+          processed.push(newStory);
         }
       }
-      return outputArray;
+      return processed;
     }
   }
 };
