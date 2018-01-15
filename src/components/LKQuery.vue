@@ -21,9 +21,11 @@
             <div class="story-dek">
               {{ story.dek }}
             </div>
-            <div class="story-terms">
-              {{ story.topics }}
-            </div>
+            <div class="story-terms" v-html="story.topics"></div>
+            <div class="story-terms" v-html="story.topics3"></div>
+            <div class="story-terms" v-html="story.topics4"></div>
+            <div class="story-terms" v-html="story.topics5"></div>
+            <div class="story-terms" v-html="story.topics6"></div>
           </div>
         </div>
       <ul v-if="errors && errors.length">
@@ -93,10 +95,46 @@ export default {
           // process taxonomy terms
           // vocabulary 1 - topics
           let numTopics = results[i].relationships.taxonomy_vocabulary_1.data.length;
-          newStory.topics = "TOPICS: ";
+          newStory.topics = "";
+          newStory.topics3 = "";
+          newStory.topics4 = "";
+          newStory.topics5 = "";
+          newStory.topics6 = "";
+
           for (var j=0; j<numTopics; j++) {
-            console.log("loopin thru topics");
-            newStory.topics += results[i].relationships.taxonomy_vocabulary_1.data[j].id;
+            newStory.topics += "<div class=\"tax-term\">TOPIC: " + results[i].relationships.taxonomy_vocabulary_1.data[j].id + "</div>";
+          }
+
+          // process taxonomy terms
+          // vocabulary 3 -
+          let numTopics3 = results[i].relationships.taxonomy_vocabulary_3.data.length;
+          newStory.topics3 = "";
+          for (var j=0; j<numTopics3; j++) {
+            newStory.topics3 += "<div class=\"tax-term\">3: " + results[i].relationships.taxonomy_vocabulary_3.data[j].id + "</div>";
+          }
+
+          // process taxonomy terms
+          // vocabulary 4 -
+          let numTopics4 = results[i].relationships.taxonomy_vocabulary_4.data.length;
+          newStory.topics4 = "";
+          for (var j=0; j<numTopics4; j++) {
+            newStory.topics4 += "<div class=\"tax-term\">4: " + results[i].relationships.taxonomy_vocabulary_4.data[j].id + "</div>";
+          }
+
+          // process taxonomy terms
+          // vocabulary 5 -
+          let numTopics5 = results[i].relationships.taxonomy_vocabulary_5.data.length;
+          newStory.topics5 = "";
+          for (var j=0; j<numTopics5; j++) {
+            newStory.topics5 += "<div class=\"tax-term\">5: " + results[i].relationships.taxonomy_vocabulary_5.data[j].id + "</div>";
+          }
+
+          // process taxonomy terms
+          // vocabulary 6 -
+          let numTopics6 = results[i].relationships.taxonomy_vocabulary_6.data.length;
+          newStory.topics6 = "";
+          for (var j=0; j<numTopics6; j++) {
+            newStory.topics6 += "<div class=\"tax-term\">6: " + results[i].relationships.taxonomy_vocabulary_6.data[j].id + "</div>";
           }
 
           processed.push(newStory);
@@ -109,6 +147,16 @@ export default {
 </script>
 
 <style scoped>
+.story-terms {
+  padding: 20px;
+}
+
+.tax-term {
+  font-size: .8em;
+  font-style: small-caps;
+  text-transform: uppercase;
+}
+
 .storylist {
   margin-top: 20px;
   border-width: 5px;
